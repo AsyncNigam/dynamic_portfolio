@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const admin = require('firebase-admin');
 
 // IMPORTANT: Set GOOGLE_APPLICATION_CREDENTIALS in your environment to run this script

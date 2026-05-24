@@ -5,7 +5,7 @@ interface MobileMockupProps {
   device?: 'pixel' | 'iphone';
 }
 
-export default function MobileMockup({ children, device = 'pixel' }: MobileMockupProps) {
+export default function MobileMockup({ children }: MobileMockupProps) {
   return (
     <div className="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-xl overflow-hidden ring-4 ring-black/50">
       <div className="absolute top-0 inset-x-0 h-6 bg-black z-20 rounded-t-[1.5rem]">
