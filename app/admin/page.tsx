@@ -161,9 +161,9 @@ function AdminPanel() {
   const handlePush = async () => {
     const raw = jsonValues[activeTab];
 
-    let data: Record<string, unknown>;
+    let parsed: Record<string, unknown>;
     try {
-      data = JSON.parse(raw);
+      parsed = JSON.parse(raw);
     } catch {
       addLog('error', `Parse error: invalid JSON in "${activeTab}".`);
       return;
@@ -173,22 +173,25 @@ function AdminPanel() {
     addLog('info', `Pushing "${activeTab}" to Firestore…`);
 
     try {
-      const res = await fetch('/api/admin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ collection: activeTab, data }),
-      });
+      // Dynamic import to avoid bundling Firebase in production
+      const { db } = await import('@/lib/firebase/client');
+      const { doc, setDoc, collection: firestoreCollection } = await import('firebase/firestore');
 
-      const result = await res.json();
-
-      if (result.success) {
-        addLog('success', result.message);
+      if (activeTab === 'projects') {
+        // Projects are stored as individual docs
+        const items = Array.isArray(parsed) ? parsed : (parsed.items || [parsed]);
+        for (const project of items as Array<Record<string, unknown>>) {
+          const projectId = (project.id as string) || (project.title as string || 'untitled').toLowerCase().replace(/\s+/g, '-');
+          await setDoc(doc(firestoreCollection(db, 'projects'), projectId), project);
+          addLog('success', `✓ Project: ${project.title || projectId}`);
+        }
       } else {
-        addLog('error', result.message);
+        await setDoc(doc(firestoreCollection(db, 'portfolio'), activeTab), parsed);
+        addLog('success', `✓ Pushed "${activeTab}" to portfolio/${activeTab}`);
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Network error';
-      addLog('error', `Request failed: ${msg}`);
+      const msg = err instanceof Error ? err.message : 'Unknown error';
+      addLog('error', `Firestore write failed: ${msg}`);
     } finally {
       setIsPushing(false);
     }
