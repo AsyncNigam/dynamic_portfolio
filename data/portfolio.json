@@ -5,7 +5,7 @@
     "email": "nigam.nps@gmail.com",
     "phone": "+91 9861703761",
     "location": "Odisha, India",
-    "summary": "Android Developer (Kotlin, Jetpack Compose, Clean Architecture) with two shipped production-grade apps featuring post-quantum cryptography and offline-first architecture.",
+    "summary": "Android Developer (Kotlin, Jetpack Compose, Clean Architecture) with shipped production-grade apps featuring post-quantum cryptography, real-time microservices, and offline-first design architectures.",
     "education": {
       "degree": "B.Tech CSE",
       "institution": "Indira Gandhi Institute Of Technology, Sarang",
@@ -14,78 +14,82 @@
     },
     "socials": {
       "github": "https://github.com/AsyncNigam",
-      "linkedin": "https://linkedin.com/in/nigam-prasad-sahoo"
+      "linkedin": "https://www.linkedin.com/in/nigam-prasad-sahoo-b0768034a/"
     },
     "leetcode": "180+ problems solved (Concurrency, DP, Trees)"
   },
   "skills": [
     {
-      "category": "Android",
+      "category": "Android Engine",
       "color": "emerald",
       "items": ["Kotlin", "Jetpack Compose", "XML", "MVVM", "Clean Architecture", "Hilt DI", "Coroutines", "WorkManager", "Room"]
     },
     {
-      "category": "Backend / Systems",
+      "category": "Backend / Distributed Systems",
       "color": "blue",
-      "items": ["Node.js", "Express.js", "TypeScript", "Microservices", "RabbitMQ", "BullMQ", "WebSockets"]
+      "items": ["Node.js", "Express.js", "Nest.JS", "TypeScript", "Microservices", "RabbitMQ", "BullMQ", "WebSockets", "PHP"]
     },
     {
-      "category": "Security",
+      "category": "Cryptographic Security",
       "color": "red",
-      "items": ["AES-256-GCM", "SQLCipher", "Android Keystore TEE", "Post-Quantum Key Exchange (ML-KEM-768 via C++ JNI)"]
+      "items": ["AES-256-GCM", "SQLCipher", "Android Keystore TEE", "Post-Quantum Key Exchange (ML-KEM-768 via C++ JNI)", "ML-DSA"]
     },
     {
-      "category": "Databases & Infra",
+      "category": "Databases & Cloud Infra",
       "color": "purple",
-      "items": ["PostgreSQL", "Prisma ORM", "Redis (Upstash)", "Docker Compose", "Firebase", "Supabase"]
+      "items": ["PostgreSQL", "MySQL", "Prisma ORM", "Redis (Upstash)", "Docker Compose", "Firebase Realtime DB", "Supabase"]
     }
   ],
   "projects": [
-    {
-      "id": "flight-booking-system",
-      "title": "Flight Booking Management System",
-      "type": "backend",
-      "tagline": "High-Concurrency Microservices Backend",
-      "tech": ["Node.js", "TypeScript", "RabbitMQ", "Redis", "PostgreSQL", "Prisma", "Docker Compose"],
-      "color": "blue",
-      "highlights": [
-        { "metric": "4", "label": "Microservices", "detail": "Gateway, Flights, Booking, Notification" },
-        { "metric": "25%", "label": "Latency Reduction", "detail": "RabbitMQ async over monolithic" },
-        { "metric": "1,000+", "label": "RPS Sustained", "detail": "API Gateway under peak load" },
-        { "metric": "99.9%", "label": "Job Reliability", "detail": "BullMQ + Redis notification engine" }
-      ],
-      "architecture": {
-        "nodes": [
-          { "id": "gateway", "label": "API Gateway", "sublabel": "Rate Limited · 1000+ RPS" },
-          { "id": "flights", "label": "Flights Service", "sublabel": "CRUD · Search" },
-          { "id": "booking", "label": "Booking Service", "sublabel": "Transactions" },
-          { "id": "notification", "label": "Notification Engine", "sublabel": "BullMQ · Redis" }
-        ],
-        "queues": [
-          { "from": "gateway", "to": "flights", "label": "REST" },
-          { "from": "gateway", "to": "booking", "label": "REST" },
-          { "from": "booking", "to": "notification", "label": "RabbitMQ" }
-        ]
-      }
-    },
     {
       "id": "quantum-safe-messenger",
       "title": "Quantum Safe Messenger",
       "type": "mobile",
       "tagline": "Post-Quantum Encrypted Android Messenger",
+      "githubLink": "https://github.com/AsyncNigam/Quantum-safe-messenger",
+      "youtubeId": "pTNYgPxMtHg",
       "tech": ["Kotlin", "Jetpack Compose", "C++ JNI", "Node.js", "Upstash Redis", "WebSockets", "SQLCipher"],
       "color": "emerald",
       "highlights": [
-        { "metric": "~10x", "label": "Faster Key Exchange", "detail": "C++ JNI vs JVM equivalent" },
-        { "metric": "35%", "label": "Latency Cut", "detail": "Runtime-adaptive encryption on ARM" },
-        { "metric": "Zero", "label": "Knowledge Backend", "detail": "Server never touches plaintext" },
-        { "metric": "TEE", "label": "Biometric Vault", "detail": "SQLCipher + Android Keystore" }
+        { "metric": "~10x", "label": "Key Exchange", "detail": "C++ JNI (ML-KEM-768) speed over JVM equivalent" },
+        { "metric": "35%", "label": "Latency Cut", "detail": "Runtime-adaptive encryption profiles on ARM hardware" },
+        { "metric": "Zero", "label": "Server Knowledge", "detail": "Stateless socket relay completely skips plaintext exposure" },
+        { "metric": "TEE", "label": "Biometric Vault", "detail": "SQLCipher Room DB tied to secure hardware keystore" }
       ],
       "mockupScreens": {
         "chatBubbles": [
           { "sender": "user", "text": "Is this channel quantum-safe?" },
           { "sender": "other", "text": "ML-KEM-768 + X25519 negotiated. All frames encrypted." },
-          { "sender": "user", "text": "Perfect. Sending classified payload now." }
+          { "sender": "user", "text": "Perfect. Outperforming classical vectors." }
+        ]
+      }
+    },
+    {
+      "id": "flight-booking-system",
+      "title": "Flight Booking Management System",
+      "type": "backend",
+      "tagline": "High-Concurrency Microservices Backend",
+      "githubLink": "https://github.com/AsyncNigam/Flight-Booking-Management-System",
+      "youtubeId": "",
+      "tech": ["Node.js", "TypeScript", "RabbitMQ", "Redis", "PostgreSQL", "Prisma", "Docker Compose"],
+      "color": "blue",
+      "highlights": [
+        { "metric": "4", "label": "Core Microservices", "detail": "Decoupled Gateway, Flights, Booking, & Notifications" },
+        { "metric": "25%", "label": "Latency Drop", "detail": "RabbitMQ async pub/sub over synchronous monolith bounds" },
+        { "metric": "1,000+", "label": "Peak RPS", "detail": "Sustained performance metrics through custom rate-limit filters" },
+        { "metric": "99.9%", "label": "Job Assurance", "detail": "Redis-backed BullMQ engine handles safe background processing" }
+      ],
+      "architecture": {
+        "nodes": [
+          { "id": "gateway", "label": "API Gateway", "sublabel": "Rate Limited · 1000+ RPS" },
+          { "id": "flights", "label": "Flights Service", "sublabel": "Relational Data Lookups" },
+          { "id": "booking", "label": "Booking Service", "sublabel": "Distributed Transactions" },
+          { "id": "notification", "label": "Notification Engine", "sublabel": "BullMQ Worker Queues" }
+        ],
+        "queues": [
+          { "from": "gateway", "to": "flights", "label": "REST HTTP" },
+          { "from": "gateway", "to": "booking", "label": "REST HTTP" },
+          { "from": "booking", "to": "notification", "label": "RabbitMQ AMQP" }
         ]
       }
     },
@@ -93,36 +97,108 @@
       "id": "nexus-ai-suite",
       "title": "Nexus AI Productivity Suite",
       "type": "mobile",
-      "tagline": "AI-Powered Notes, Tasks & Journaling",
+      "tagline": "AI-Powered Notes, Tasks & Journaling System",
+      "githubLink": "https://github.com/AsyncNigam/Nexus",
+      "youtubeId": "tSnbwv5029s",
       "tech": ["Kotlin", "Jetpack Compose", "Gemini 2.0 Flash", "Firebase", "Room DB", "WorkManager"],
       "color": "purple",
       "highlights": [
-        { "metric": "40+", "label": "Screens Migrated", "detail": "XML to Jetpack Compose" },
-        { "metric": "~40%", "label": "Faster Processing", "detail": "Gemini 2.0 Flash summaries" },
-        { "metric": "Offline", "label": "First Architecture", "detail": "Room DB + WorkManager sync" },
-        { "metric": "Sub-200ms", "label": "Firestore Latency", "detail": "Multi-service Firebase" }
+        { "metric": "40+", "label": "XML Layouts Migrated", "detail": "Refactored cleanly to Jetpack Compose declarative styling" },
+        { "metric": "~40%", "label": "Faster Parsing", "detail": "Contextual summarization loops via Gemini 2.0 Flash models" },
+        { "metric": "Offline", "label": "First State Management", "detail": "Room DB local cache backed by WorkManager data sync tracks" },
+        { "metric": "Sub-200ms", "label": "Cloud Latency", "detail": "Highly efficient indexing inside remote Firestore structures" }
       ],
       "mockupScreens": {
         "notesList": [
-          { "title": "System Design Notes", "preview": "Microservices patterns...", "tag": "Study" },
-          { "title": "Gemini Summary", "preview": "AI-generated overview of...", "tag": "AI" },
-          { "title": "Sprint Retrospective", "preview": "What went well this week...", "tag": "Work" }
+          { "title": "System Design Patterns", "preview": "Microservices event-driven designs...", "tag": "Core" },
+          { "title": "Gemini Context Note", "preview": "AI generated concise architectural summaries...", "tag": "AI" }
+        ]
+      }
+    },
+    {
+      "id": "focus-flow",
+      "title": "FocusFlow (HackNITR 7.0 Showcase)",
+      "type": "mobile",
+      "tagline": "Biometric Fatigue Analysis & Smart Study Predictor",
+      "githubLink": "https://github.com/AsyncNigam/FocusFlow_nitr",
+      "youtubeId": "FYEhmKMAQiA",
+      "tech": ["Kotlin", "Jetpack Compose", "Android SDK", "Coroutines", "Room DB", "Architecture ViewModels"],
+      "color": "orange",
+      "highlights": [
+        { "metric": "24hr", "label": "Hackathon Build", "detail": "Independently built and deployed functional MVP architecture" },
+        { "metric": "Burnout", "label": "Early Detection", "detail": "Tracks and analyzes study velocity over screen tracking patterns" },
+        { "metric": "Smart", "label": "Energy Schedules", "detail": "Generates predictive rest reminders based on focus fatigue" },
+        { "metric": "Metrics", "label": "Categorization", "detail": "Sorts complex application usage profiles cleanly via background threads" }
+      ],
+      "mockupScreens": {
+        "notesList": [
+          { "title": "Current Focus Level", "preview": "Fatigue index normal. Next break recommended in 45 mins.", "tag": "Insights" },
+          { "title": "Burnout Prevented", "preview": "System predicted critical fatigue spikes at 11:00 PM.", "tag": "Analytics" }
+        ]
+      }
+    },
+    {
+      "id": "student-management-lms",
+      "title": "Student Management Ecosystem (LMS)",
+      "type": "fullstack",
+      "tagline": "Full-Stack Native Educational Infrastructure",
+      "githubLink": "https://github.com/AsyncNigam/Aone_project_demo",
+      "youtubeId": "olc6qQxOz3s",
+      "tech": ["PHP", "Kotlin", "MySQL", "REST API", "Retrofit", "Jetpack Compose", "MVVM Architecture"],
+      "color": "indigo",
+      "highlights": [
+        { "metric": "Secure", "label": "Auth Pipelines", "detail": "Custom engineered token-based authentication access controllers" },
+        { "metric": "Optimized", "label": "MySQL Schemas", "detail": "Configured scalable relations to streamline bulk grade enrollment loads" },
+        { "metric": "Decoupled", "label": "PHP Engine APIs", "detail": "Exposes responsive REST API hooks consuming client requests safely" },
+        { "metric": "Sync", "label": "Real-time State", "detail": "Maintains local MVVM synchronization bindings via data endpoints" }
+      ],
+      "architecture": {
+        "nodes": [
+          { "id": "android_client", "label": "Native Android app", "sublabel": "Jetpack Compose · MVVM" },
+          { "id": "php_api", "label": "PHP REST API Core", "sublabel": "Secure Routing Engine" },
+          { "id": "mysql_db", "label": "MySQL Database", "sublabel": "Optimized Academic Schemas" }
+        ],
+        "queues": [
+          { "from": "android_client", "to": "php_api", "label": "Retrofit Client Streams" },
+          { "from": "php_api", "to": "mysql_db", "label": "Transactional Queries" }
+        ]
+      }
+    },
+    {
+      "id": "coffee-shop-v2",
+      "title": "Coffee Shop Application E-Commerce v2.0",
+      "type": "mobile",
+      "tagline": "Declarative Async Commercial Ordering Client",
+      "githubLink": "https://github.com/AsyncNigam/coffee_shop_version_2.0",
+      "youtubeId": "qSzPC1nFr7k",
+      "tech": ["Kotlin", "Jetpack Compose", "Firebase Realtime DB", "Retrofit", "Glide", "Coroutines Threading"],
+      "color": "amber",
+      "highlights": [
+        { "metric": "Reactive", "label": "State Layouts", "detail": "Built completely with modern declarative layout composables" },
+        { "metric": "Live", "label": "Database Synced", "detail": "Synchronizes interactive active cart mutations and orders to Firebase instances" },
+        { "metric": "Async", "label": "Image Caching", "detail": "Utilizes Glide image processing pipelines driven by async scope routines" },
+        { "metric": "Fluid", "label": "Navigation Flow", "detail": "Features seamless transition logic passing cross-screen layout bounds" }
+      ],
+      "mockupScreens": {
+        "chatBubbles": [
+          { "sender": "user", "text": "Added: Hazelnut Cold Brew to Cart." },
+          { "sender": "other", "text": "Syncing transaction pipelines to Realtime Database storage." }
         ]
       }
     }
   ],
   "experience": [
     {
-      "role": "Mentor, Codex Crew",
-      "detail": "Guided 50+ members in system design, microservices, and DSA."
+      "role": "Core Android Developer, GDG IGIT Sarang",
+      "detail": "Organized multiple campus-wide presentation tracks, bootcamps, and technical session meetups targeting Modern Android Development (MAD), Dependency Injection structures via Hilt, and declarative UI tools."
     },
     {
-      "role": "Core Member, GDG IGIT",
-      "detail": "Organized events on Jetpack Compose and Modern Android Development."
+      "role": "Core Member & Mentor, Codex Crew Tech Group",
+      "detail": "Guided and taught over 50+ active student engineers across semesters. Conducted specialized system design workshops, high-level pattern walkthroughs, and core Data Structures & Algorithms sessions."
     },
     {
-      "role": "HackNITR 7.0",
-      "detail": "Shipped a functional Android MVP independently in a 24-hour sprint."
+      "role": "National Finalist, HackNITR 7.0 at NIT Rourkela",
+      "detail": "Competed in a rigorous 24-hour national hackathon sprint. Solo engineered, compiled, and successfully delivered FocusFlow—a functional mobile productivity predictive diagnostic platform."
     }
   ]
 }

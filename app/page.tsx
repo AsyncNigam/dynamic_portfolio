@@ -12,39 +12,237 @@ import {
   FadeInUp,
 } from "@/components/animations/GSAPWrappers";
 
-const COLOR_CLASSES: Record<string, { tag: string; metric: string; border: string }> = {
+/* ─── Color Map — maps JSON color keys to Tailwind classes ─── */
+
+const COLOR_CLASSES: Record<string, { tag: string; metric: string; border: string; dot: string }> = {
   emerald: {
     tag: "bg-emerald-900/40 text-emerald-300 border-emerald-800",
     metric: "text-emerald-400",
     border: "border-emerald-500/30",
+    dot: "bg-emerald-400",
   },
   blue: {
     tag: "bg-blue-900/40 text-blue-300 border-blue-800",
     metric: "text-blue-400",
     border: "border-blue-500/30",
+    dot: "bg-blue-400",
   },
   purple: {
     tag: "bg-purple-900/40 text-purple-300 border-purple-800",
     metric: "text-purple-400",
     border: "border-purple-500/30",
+    dot: "bg-purple-400",
   },
   red: {
     tag: "bg-red-900/40 text-red-300 border-red-800",
     metric: "text-red-400",
     border: "border-red-500/30",
+    dot: "bg-red-400",
+  },
+  orange: {
+    tag: "bg-orange-900/40 text-orange-300 border-orange-800",
+    metric: "text-orange-400",
+    border: "border-orange-500/30",
+    dot: "bg-orange-400",
+  },
+  amber: {
+    tag: "bg-amber-900/40 text-amber-300 border-amber-800",
+    metric: "text-amber-400",
+    border: "border-amber-500/30",
+    dot: "bg-amber-400",
+  },
+  indigo: {
+    tag: "bg-indigo-900/40 text-indigo-300 border-indigo-800",
+    metric: "text-indigo-400",
+    border: "border-indigo-500/30",
+    dot: "bg-indigo-400",
   },
 };
 
+/* ─── Typed interfaces for JSON data ─── */
+
+interface Highlight {
+  metric: string;
+  label: string;
+  detail: string;
+}
+
+interface ChatBubble {
+  sender: string;
+  text: string;
+}
+
+interface NoteItem {
+  title: string;
+  preview: string;
+  tag: string;
+}
+
+interface ArchNode {
+  id: string;
+  label: string;
+  sublabel: string;
+}
+
+interface ArchQueue {
+  from: string;
+  to: string;
+  label: string;
+}
+
+interface Project {
+  id: string;
+  title: string;
+  type: string;
+  tagline: string;
+  githubLink?: string;
+  youtubeId?: string;
+  tech: string[];
+  color: string;
+  highlights: Highlight[];
+  architecture?: {
+    nodes: ArchNode[];
+    queues: ArchQueue[];
+  };
+  mockupScreens?: {
+    chatBubbles?: ChatBubble[];
+    notesList?: NoteItem[];
+  };
+}
+
+/* ─── Mobile App Screen Renderers ─── */
+
+function ChatScreen({ project, colors }: { project: Project; colors: typeof COLOR_CLASSES.emerald }) {
+  const bubbles = project.mockupScreens?.chatBubbles || [];
+  const appName = project.id === "coffee-shop-v2" ? "CoffeeShop" : project.title.split(" ")[0];
+  return (
+    <div className="flex flex-col h-full bg-zinc-900 text-white font-sans text-sm">
+      <div className="p-3 bg-zinc-800/80 border-b border-zinc-700/50 flex justify-between items-center">
+        <span className="font-bold text-xs">{appName}</span>
+        <span className={`${colors.metric} text-[10px] flex items-center gap-1`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${colors.dot} animate-pulse`} />
+          Active
+        </span>
+      </div>
+      <div className="flex-1 p-3 flex flex-col gap-3 overflow-hidden">
+        {bubbles.map((msg, i) => (
+          <div
+            key={i}
+            className={`max-w-[85%] p-2.5 rounded-2xl text-[11px] leading-relaxed ${
+              msg.sender === "user"
+                ? "self-end bg-emerald-600/80 rounded-tr-sm"
+                : "self-start bg-zinc-800 rounded-tl-sm"
+            }`}
+          >
+            {msg.text}
+          </div>
+        ))}
+        <div className="self-start bg-zinc-800 p-2.5 rounded-2xl rounded-tl-sm">
+          <div className="flex gap-1">
+            <div className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-pulse [animation-delay:0.2s]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-pulse [animation-delay:0.4s]" />
+          </div>
+        </div>
+      </div>
+      <div className="p-2 border-t border-zinc-700/50 flex items-center gap-2">
+        <div className="flex-1 bg-zinc-800 rounded-full px-3 py-1.5 text-[10px] text-zinc-500">
+          Type a message...
+        </div>
+        <div className={`w-7 h-7 rounded-full ${colors.dot.replace("bg-", "bg-")} flex items-center justify-center text-[10px]`}>
+          ▶
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function NotesScreen({ project, colors }: { project: Project; colors: typeof COLOR_CLASSES.emerald }) {
+  const notes = project.mockupScreens?.notesList || [];
+  const appName = project.title.split(" ")[0];
+  return (
+    <div className="flex flex-col h-full bg-zinc-900 text-white font-sans text-sm">
+      <div className="p-3 bg-zinc-800/80 border-b border-zinc-700/50">
+        <span className="font-bold text-xs">{appName}</span>
+        <span className={`${colors.metric} text-[10px] ml-2`}>
+          {project.id === "focus-flow" ? "Tracking" : "AI Powered"}
+        </span>
+      </div>
+      <div className="flex-1 p-3 space-y-2 overflow-hidden">
+        {notes.map((note, i) => (
+          <div key={i} className="p-3 rounded-xl bg-zinc-800/60 border border-zinc-700/30">
+            <div className="flex justify-between items-start">
+              <span className="font-medium text-[11px]">{note.title}</span>
+              <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${colors.tag}`}>
+                {note.tag}
+              </span>
+            </div>
+            <p className="text-zinc-500 text-[10px] mt-1">{note.preview}</p>
+          </div>
+        ))}
+        <div className={`p-3 rounded-xl border ${colors.border} bg-zinc-800/20`}>
+          <div className={`text-[10px] ${colors.metric} font-mono mb-1`}>
+            {project.id === "focus-flow" ? "📊 Focus Analytics" : "✨ AI Summary"}
+          </div>
+          <div className="text-[10px] text-zinc-400 leading-relaxed">
+            {project.id === "focus-flow"
+              ? "Monitoring cognitive load patterns across active sessions..."
+              : "Processing contextual data from recent entries..."}
+          </div>
+        </div>
+      </div>
+      <div className={`absolute bottom-10 right-6 w-10 h-10 rounded-full ${colors.dot.replace("bg-", "bg-")} flex items-center justify-center text-lg shadow-lg`}>
+        +
+      </div>
+    </div>
+  );
+}
+
+/* ─── Project Visual — picks the right renderer ─── */
+
+function ProjectVisual({ project, colors }: { project: Project; colors: typeof COLOR_CLASSES.emerald }) {
+  // Architecture diagram for backend / fullstack
+  if (project.architecture) {
+    return (
+      <SystemArchitectureCanvas
+        architecture={project.architecture}
+        accentColor={project.color as "blue" | "indigo" | "emerald" | "purple" | "orange" | "amber"}
+      />
+    );
+  }
+
+  // Mobile mockup
+  if (project.mockupScreens?.chatBubbles) {
+    return (
+      <MobileMockup>
+        <ChatScreen project={project} colors={colors} />
+      </MobileMockup>
+    );
+  }
+
+  if (project.mockupScreens?.notesList) {
+    return (
+      <MobileMockup>
+        <NotesScreen project={project} colors={colors} />
+      </MobileMockup>
+    );
+  }
+
+  return null;
+}
+
+/* ═══════════════════════════════════════════════
+ *  MAIN PAGE
+ * ═══════════════════════════════════════════════ */
+
 export default function Home() {
   const { profile, skills, projects, experience } = portfolioData;
+  const typedProjects = projects as unknown as Project[];
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white selection:bg-emerald-500/30">
-      {/* ═══════════════════════════════════════════════
-       *  HERO SECTION
-       * ═══════════════════════════════════════════════ */}
+      {/* ═══ HERO ═══ */}
       <section className="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden px-8">
-        {/* Ambient glow */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(52,211,153,0.06),transparent_55%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(96,165,250,0.04),transparent_50%)]" />
 
@@ -68,22 +266,13 @@ export default function Home() {
               {profile.summary}
             </p>
 
-            {/* Social Links */}
             <div className="flex justify-center gap-4 pt-4">
-              <a
-                href={profile.socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 rounded-lg border border-zinc-800 bg-zinc-900/50 text-zinc-400 text-sm font-mono hover:border-emerald-800 hover:text-emerald-400 transition-colors"
-              >
+              <a href={profile.socials.github} target="_blank" rel="noopener noreferrer"
+                className="px-4 py-2 rounded-lg border border-zinc-800 bg-zinc-900/50 text-zinc-400 text-sm font-mono hover:border-emerald-800 hover:text-emerald-400 transition-colors">
                 GitHub
               </a>
-              <a
-                href={profile.socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 rounded-lg border border-zinc-800 bg-zinc-900/50 text-zinc-400 text-sm font-mono hover:border-blue-800 hover:text-blue-400 transition-colors"
-              >
+              <a href={profile.socials.linkedin} target="_blank" rel="noopener noreferrer"
+                className="px-4 py-2 rounded-lg border border-zinc-800 bg-zinc-900/50 text-zinc-400 text-sm font-mono hover:border-blue-800 hover:text-blue-400 transition-colors">
                 LinkedIn
               </a>
             </div>
@@ -95,16 +284,12 @@ export default function Home() {
         </FadeInUp>
       </section>
 
-      {/* ═══════════════════════════════════════════════
-       *  SKILLS SECTION
-       * ═══════════════════════════════════════════════ */}
+      {/* ═══ SKILLS ═══ */}
       <section className="py-28 px-8 max-w-6xl mx-auto">
         <FadeInUp>
           <div className="flex items-center gap-3 mb-12">
             <span className="w-8 h-px bg-emerald-500/50" />
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">
-              Technical Arsenal
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Technical Arsenal</h2>
           </div>
         </FadeInUp>
 
@@ -119,10 +304,7 @@ export default function Home() {
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {category.items.map((item) => (
-                      <span
-                        key={item}
-                        className={`px-3 py-1 text-xs font-mono rounded-full border ${colors.tag}`}
-                      >
+                      <span key={item} className={`px-3 py-1 text-xs font-mono rounded-full border ${colors.tag}`}>
                         {item}
                       </span>
                     ))}
@@ -134,11 +316,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════
-       *  PROJECTS — SCROLL INVERSION TRACK
-       * ═══════════════════════════════════════════════ */}
+      {/* ═══ PROJECTS — HORIZONTAL SCROLL ═══ */}
       <ScrollInversionTrack>
-        {projects.map((project) => {
+        {typedProjects.map((project) => {
           const colors = COLOR_CLASSES[project.color] || COLOR_CLASSES.emerald;
 
           return (
@@ -146,10 +326,10 @@ export default function Home() {
               key={project.id}
               className="w-[85vw] max-w-[1200px] shrink-0 h-full flex flex-col lg:flex-row gap-10 items-center justify-center p-6 md:p-10"
             >
-              {/* Left: Text Content */}
+              {/* Left: Text */}
               <div className="flex-1 space-y-5 max-w-xl">
                 <div className="flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full ${colors.metric.replace("text-", "bg-")}`} />
+                  <span className={`w-2 h-2 rounded-full ${colors.dot}`} />
                   <span className="text-zinc-500 text-xs font-mono uppercase tracking-widest">
                     {project.type}
                   </span>
@@ -157,130 +337,49 @@ export default function Home() {
                 <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
                   {project.title}
                 </h2>
-                <p className={`text-sm font-mono ${colors.metric}`}>
-                  {project.tagline}
-                </p>
+                <p className={`text-sm font-mono ${colors.metric}`}>{project.tagline}</p>
 
-                {/* Tech Tags */}
+                {/* Tech */}
                 <div className="flex gap-2 flex-wrap">
                   {project.tech.map((t) => (
-                    <span
-                      key={t}
-                      className={`px-3 py-1 text-[11px] font-mono rounded-full border ${colors.tag}`}
-                    >
+                    <span key={t} className={`px-3 py-1 text-[11px] font-mono rounded-full border ${colors.tag}`}>
                       {t}
                     </span>
                   ))}
                 </div>
 
-                {/* Highlights Grid */}
+                {/* Highlights */}
                 <div className="grid grid-cols-2 gap-3 pt-2">
                   {project.highlights.map((h) => (
-                    <div
-                      key={h.label}
-                      className="p-3 rounded-lg bg-zinc-900/60 border border-zinc-800/60"
-                    >
-                      <div className={`text-xl font-bold ${colors.metric}`}>
-                        {h.metric}
-                      </div>
+                    <div key={h.label} className="p-3 rounded-lg bg-zinc-900/60 border border-zinc-800/60">
+                      <div className={`text-xl font-bold ${colors.metric}`}>{h.metric}</div>
                       <div className="text-zinc-400 text-xs font-medium">{h.label}</div>
                       <div className="text-zinc-600 text-[10px] mt-0.5">{h.detail}</div>
                     </div>
                   ))}
+                </div>
+
+                {/* Action Links */}
+                <div className="flex gap-3 pt-2">
+                  {project.githubLink && (
+                    <a href={project.githubLink} target="_blank" rel="noopener noreferrer"
+                      className={`px-4 py-2 rounded-lg border text-xs font-mono transition-colors ${colors.border} text-zinc-400 hover:${colors.metric}`}>
+                      ↗ Source Code
+                    </a>
+                  )}
+                  {project.youtubeId && (
+                    <a href={`https://www.youtube.com/watch?v=${project.youtubeId}`} target="_blank" rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-lg border border-red-500/30 text-xs font-mono text-zinc-400 hover:text-red-400 transition-colors">
+                      ▶ Watch Demo
+                    </a>
+                  )}
                 </div>
               </div>
 
               {/* Right: Visual */}
               <div className="flex-1 flex justify-center w-full max-w-md">
                 <CinematicZoom>
-                  {project.type === "backend" ? (
-                    <SystemArchitectureCanvas />
-                  ) : project.id === "quantum-safe-messenger" ? (
-                    <MobileMockup>
-                      <div className="flex flex-col h-full bg-zinc-900 text-white font-sans text-sm">
-                        {/* App Bar */}
-                        <div className="p-3 bg-zinc-800/80 border-b border-zinc-700/50 flex justify-between items-center">
-                          <span className="font-bold text-xs">Quantum Chat</span>
-                          <span className="text-emerald-400 text-[10px] flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            PQ Secured
-                          </span>
-                        </div>
-                        {/* Chat Messages */}
-                        <div className="flex-1 p-3 flex flex-col gap-3 overflow-hidden">
-                          {project.mockupScreens?.chatBubbles?.map((msg, i) => (
-                            <div
-                              key={i}
-                              className={`max-w-[85%] p-2.5 rounded-2xl text-[11px] leading-relaxed ${
-                                msg.sender === "user"
-                                  ? "self-end bg-emerald-600/80 rounded-tr-sm"
-                                  : "self-start bg-zinc-800 rounded-tl-sm"
-                              }`}
-                            >
-                              {msg.text}
-                            </div>
-                          ))}
-                          {/* Typing indicator */}
-                          <div className="self-start bg-zinc-800 p-2.5 rounded-2xl rounded-tl-sm">
-                            <div className="flex gap-1">
-                              <div className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-pulse" />
-                              <div className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-pulse [animation-delay:0.2s]" />
-                              <div className="w-1.5 h-1.5 rounded-full bg-zinc-500 animate-pulse [animation-delay:0.4s]" />
-                            </div>
-                          </div>
-                        </div>
-                        {/* Input Bar */}
-                        <div className="p-2 border-t border-zinc-700/50 flex items-center gap-2">
-                          <div className="flex-1 bg-zinc-800 rounded-full px-3 py-1.5 text-[10px] text-zinc-500">
-                            Type a message...
-                          </div>
-                          <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-[10px]">
-                            ▶
-                          </div>
-                        </div>
-                      </div>
-                    </MobileMockup>
-                  ) : (
-                    <MobileMockup>
-                      <div className="flex flex-col h-full bg-zinc-900 text-white font-sans text-sm">
-                        {/* Nexus App Bar */}
-                        <div className="p-3 bg-zinc-800/80 border-b border-zinc-700/50">
-                          <span className="font-bold text-xs">Nexus</span>
-                          <span className="text-purple-400 text-[10px] ml-2">AI Powered</span>
-                        </div>
-                        {/* Notes List */}
-                        <div className="flex-1 p-3 space-y-2 overflow-hidden">
-                          {project.mockupScreens?.notesList?.map((note, i) => (
-                            <div
-                              key={i}
-                              className="p-3 rounded-xl bg-zinc-800/60 border border-zinc-700/30"
-                            >
-                              <div className="flex justify-between items-start">
-                                <span className="font-medium text-[11px]">{note.title}</span>
-                                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-purple-900/40 text-purple-300 border border-purple-800/50">
-                                  {note.tag}
-                                </span>
-                              </div>
-                              <p className="text-zinc-500 text-[10px] mt-1">{note.preview}</p>
-                            </div>
-                          ))}
-                          {/* AI Summary Card */}
-                          <div className="p-3 rounded-xl bg-purple-900/20 border border-purple-800/30">
-                            <div className="text-[10px] text-purple-400 font-mono mb-1">
-                              ✨ Gemini Flash Summary
-                            </div>
-                            <div className="text-[10px] text-zinc-400 leading-relaxed">
-                              Based on your notes, here are 3 action items for this sprint...
-                            </div>
-                          </div>
-                        </div>
-                        {/* FAB */}
-                        <div className="absolute bottom-10 right-6 w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-lg shadow-lg shadow-purple-500/30">
-                          +
-                        </div>
-                      </div>
-                    </MobileMockup>
-                  )}
+                  <ProjectVisual project={project} colors={colors} />
                 </CinematicZoom>
               </div>
             </div>
@@ -288,42 +387,29 @@ export default function Home() {
         })}
       </ScrollInversionTrack>
 
-      {/* ═══════════════════════════════════════════════
-       *  EDUCATION & STATS
-       * ═══════════════════════════════════════════════ */}
+      {/* ═══ EDUCATION & STATS ═══ */}
       <section className="py-28 px-8 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left: Education + Leadership */}
           <div>
             <FadeInUp>
               <div className="flex items-center gap-3 mb-10">
                 <span className="w-8 h-px bg-blue-500/50" />
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">
-                  Background
-                </h2>
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Background</h2>
               </div>
             </FadeInUp>
 
-            {/* Education Card */}
             <FadeInUp delay={0.1}>
               <div className="glass-card p-6 border border-blue-500/20 mb-6">
-                <div className="text-blue-400 text-xs font-mono uppercase tracking-widest mb-3">
-                  Education
-                </div>
+                <div className="text-blue-400 text-xs font-mono uppercase tracking-widest mb-3">Education</div>
                 <h3 className="text-lg font-bold">{profile.education.degree}</h3>
                 <p className="text-zinc-400 text-sm">{profile.education.institution}</p>
                 <div className="flex gap-4 mt-3">
-                  <span className="text-emerald-400 text-sm font-mono font-bold">
-                    GPA: {profile.education.gpa}
-                  </span>
-                  <span className="text-zinc-500 text-sm font-mono">
-                    {profile.education.years}
-                  </span>
+                  <span className="text-emerald-400 text-sm font-mono font-bold">GPA: {profile.education.gpa}</span>
+                  <span className="text-zinc-500 text-sm font-mono">{profile.education.years}</span>
                 </div>
               </div>
             </FadeInUp>
 
-            {/* Leadership */}
             <div className="space-y-3">
               {experience.map((exp, i) => (
                 <FadeInUp key={exp.role} delay={0.15 + i * 0.1}>
@@ -336,14 +422,11 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right: GitHub Heatmap + Stats */}
           <div>
             <FadeInUp>
               <div className="flex items-center gap-3 mb-10">
                 <span className="w-8 h-px bg-emerald-500/50" />
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">
-                  Contributions
-                </h2>
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Contributions</h2>
               </div>
             </FadeInUp>
 
@@ -371,9 +454,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════
-       *  FOOTER
-       * ═══════════════════════════════════════════════ */}
+      {/* ═══ FOOTER ═══ */}
       <footer className="border-t border-zinc-800/50 py-12 px-8">
         <div className="max-w-4xl mx-auto text-center space-y-4">
           <p className="text-zinc-500 text-sm font-mono">
@@ -385,7 +466,6 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Terminal Hint */}
       <div className="fixed bottom-20 right-4 text-zinc-700 font-mono text-[10px] hidden md:block z-30">
         <kbd className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 rounded text-[9px]">Ctrl</kbd>
         {" + "}
