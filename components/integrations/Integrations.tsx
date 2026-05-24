@@ -1,58 +1,58 @@
-import React from 'react';
+"use client";
 
-// Simplified representation since we didn't install react-github-calendar yet
-// We will mock the aesthetic block grid for the heatmap
+import React, { useMemo } from "react";
+
+// Deterministic pseudo-random based on index for consistent SSR/CSR hydration
+function seededRandom(seed: number): number {
+  const x = Math.sin(seed * 127.1 + seed * 311.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+
 export function GitHubHeatmap() {
-  // Generate random mock contribution data
-  const weeks = Array.from({ length: 52 });
-  const getLevelColor = (level: number) => {
-    switch(level) {
-      case 1: return 'bg-emerald-900/40';
-      case 2: return 'bg-emerald-800/60';
-      case 3: return 'bg-emerald-600/80';
-      case 4: return 'bg-emerald-400';
-      default: return 'bg-zinc-900';
+  const weeks = 52;
+  const days = 7;
+
+  const grid = useMemo(() => {
+    return Array.from({ length: weeks }, (_, w) =>
+      Array.from({ length: days }, (_, d) => {
+        const val = seededRandom(w * 7 + d + 42);
+        if (val < 0.35) return 0;
+        if (val < 0.55) return 1;
+        if (val < 0.75) return 2;
+        if (val < 0.9) return 3;
+        return 4;
+      })
+    );
+  }, []);
+
+  const levelColor = (level: number) => {
+    switch (level) {
+      case 1: return "bg-emerald-900/40";
+      case 2: return "bg-emerald-800/60";
+      case 3: return "bg-emerald-600/80";
+      case 4: return "bg-emerald-400";
+      default: return "bg-zinc-900";
     }
   };
 
   return (
-    <div className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-6 font-mono">
-      <h3 className="text-zinc-400 mb-4 text-sm">github.com/AsyncNigam</h3>
-      <div className="flex gap-1 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-zinc-700">
-        {weeks.map((_, i) => (
-          <div key={i} className="flex flex-col gap-1">
-            {Array.from({ length: 7 }).map((_, j) => {
-              const level = Math.floor(Math.random() * 5);
-              return (
-                <div 
-                  key={j} 
-                  className={`w-3 h-3 rounded-sm ${getLevelColor(level)}`}
-                  title={`Contributions on day`}
-                />
-              );
-            })}
+    <div className="w-full glass-card p-6 font-mono border border-zinc-800/60">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-zinc-400 text-sm">github.com/AsyncNigam</h3>
+        <span className="text-emerald-400/60 text-xs">contributions</span>
+      </div>
+      <div className="flex gap-[3px] overflow-x-auto pb-2">
+        {grid.map((week, i) => (
+          <div key={i} className="flex flex-col gap-[3px]">
+            {week.map((level, j) => (
+              <div
+                key={j}
+                className={`w-[10px] h-[10px] rounded-[2px] ${levelColor(level)} transition-colors`}
+              />
+            ))}
           </div>
         ))}
       </div>
-    </div>
-  );
-}
-
-export function YouTubeMonitor({ videoId }: { videoId: string }) {
-  return (
-    <div className="w-full aspect-video bg-black border border-zinc-800 rounded-xl overflow-hidden relative shadow-2xl">
-      <div className="absolute inset-0 pointer-events-none border-[8px] border-zinc-900 z-10 rounded-xl rounded-b-none" />
-      <div className="absolute bottom-0 inset-x-0 h-4 bg-zinc-800 z-10 flex justify-center">
-        <div className="w-16 h-1 bg-zinc-600 mt-1 rounded-full" />
-      </div>
-      <iframe
-        className="w-full h-full"
-        src={`https://www.youtube.com/embed/${videoId}?autoplay=0&controls=1&rel=0`}
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      ></iframe>
     </div>
   );
 }

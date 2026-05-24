@@ -1,0 +1,128 @@
+{
+  "profile": {
+    "name": "Nigam Prasad Sahoo",
+    "role": "Android & Full-Stack Systems Engineer",
+    "email": "nigam.nps@gmail.com",
+    "phone": "+91 9861703761",
+    "location": "Odisha, India",
+    "summary": "Android Developer (Kotlin, Jetpack Compose, Clean Architecture) with two shipped production-grade apps featuring post-quantum cryptography and offline-first architecture.",
+    "education": {
+      "degree": "B.Tech CSE",
+      "institution": "Indira Gandhi Institute Of Technology, Sarang",
+      "years": "2024-2028",
+      "gpa": "9.87/10"
+    },
+    "socials": {
+      "github": "https://github.com/AsyncNigam",
+      "linkedin": "https://linkedin.com/in/nigam-prasad-sahoo"
+    },
+    "leetcode": "180+ problems solved (Concurrency, DP, Trees)"
+  },
+  "skills": [
+    {
+      "category": "Android",
+      "color": "emerald",
+      "items": ["Kotlin", "Jetpack Compose", "XML", "MVVM", "Clean Architecture", "Hilt DI", "Coroutines", "WorkManager", "Room"]
+    },
+    {
+      "category": "Backend / Systems",
+      "color": "blue",
+      "items": ["Node.js", "Express.js", "TypeScript", "Microservices", "RabbitMQ", "BullMQ", "WebSockets"]
+    },
+    {
+      "category": "Security",
+      "color": "red",
+      "items": ["AES-256-GCM", "SQLCipher", "Android Keystore TEE", "Post-Quantum Key Exchange (ML-KEM-768 via C++ JNI)"]
+    },
+    {
+      "category": "Databases & Infra",
+      "color": "purple",
+      "items": ["PostgreSQL", "Prisma ORM", "Redis (Upstash)", "Docker Compose", "Firebase", "Supabase"]
+    }
+  ],
+  "projects": [
+    {
+      "id": "flight-booking-system",
+      "title": "Flight Booking Management System",
+      "type": "backend",
+      "tagline": "High-Concurrency Microservices Backend",
+      "tech": ["Node.js", "TypeScript", "RabbitMQ", "Redis", "PostgreSQL", "Prisma", "Docker Compose"],
+      "color": "blue",
+      "highlights": [
+        { "metric": "4", "label": "Microservices", "detail": "Gateway, Flights, Booking, Notification" },
+        { "metric": "25%", "label": "Latency Reduction", "detail": "RabbitMQ async over monolithic" },
+        { "metric": "1,000+", "label": "RPS Sustained", "detail": "API Gateway under peak load" },
+        { "metric": "99.9%", "label": "Job Reliability", "detail": "BullMQ + Redis notification engine" }
+      ],
+      "architecture": {
+        "nodes": [
+          { "id": "gateway", "label": "API Gateway", "sublabel": "Rate Limited · 1000+ RPS" },
+          { "id": "flights", "label": "Flights Service", "sublabel": "CRUD · Search" },
+          { "id": "booking", "label": "Booking Service", "sublabel": "Transactions" },
+          { "id": "notification", "label": "Notification Engine", "sublabel": "BullMQ · Redis" }
+        ],
+        "queues": [
+          { "from": "gateway", "to": "flights", "label": "REST" },
+          { "from": "gateway", "to": "booking", "label": "REST" },
+          { "from": "booking", "to": "notification", "label": "RabbitMQ" }
+        ]
+      }
+    },
+    {
+      "id": "quantum-safe-messenger",
+      "title": "Quantum Safe Messenger",
+      "type": "mobile",
+      "tagline": "Post-Quantum Encrypted Android Messenger",
+      "tech": ["Kotlin", "Jetpack Compose", "C++ JNI", "Node.js", "Upstash Redis", "WebSockets", "SQLCipher"],
+      "color": "emerald",
+      "highlights": [
+        { "metric": "~10x", "label": "Faster Key Exchange", "detail": "C++ JNI vs JVM equivalent" },
+        { "metric": "35%", "label": "Latency Cut", "detail": "Runtime-adaptive encryption on ARM" },
+        { "metric": "Zero", "label": "Knowledge Backend", "detail": "Server never touches plaintext" },
+        { "metric": "TEE", "label": "Biometric Vault", "detail": "SQLCipher + Android Keystore" }
+      ],
+      "mockupScreens": {
+        "chatBubbles": [
+          { "sender": "user", "text": "Is this channel quantum-safe?" },
+          { "sender": "other", "text": "ML-KEM-768 + X25519 negotiated. All frames encrypted." },
+          { "sender": "user", "text": "Perfect. Sending classified payload now." }
+        ]
+      }
+    },
+    {
+      "id": "nexus-ai-suite",
+      "title": "Nexus AI Productivity Suite",
+      "type": "mobile",
+      "tagline": "AI-Powered Notes, Tasks & Journaling",
+      "tech": ["Kotlin", "Jetpack Compose", "Gemini 2.0 Flash", "Firebase", "Room DB", "WorkManager"],
+      "color": "purple",
+      "highlights": [
+        { "metric": "40+", "label": "Screens Migrated", "detail": "XML to Jetpack Compose" },
+        { "metric": "~40%", "label": "Faster Processing", "detail": "Gemini 2.0 Flash summaries" },
+        { "metric": "Offline", "label": "First Architecture", "detail": "Room DB + WorkManager sync" },
+        { "metric": "Sub-200ms", "label": "Firestore Latency", "detail": "Multi-service Firebase" }
+      ],
+      "mockupScreens": {
+        "notesList": [
+          { "title": "System Design Notes", "preview": "Microservices patterns...", "tag": "Study" },
+          { "title": "Gemini Summary", "preview": "AI-generated overview of...", "tag": "AI" },
+          { "title": "Sprint Retrospective", "preview": "What went well this week...", "tag": "Work" }
+        ]
+      }
+    }
+  ],
+  "experience": [
+    {
+      "role": "Mentor, Codex Crew",
+      "detail": "Guided 50+ members in system design, microservices, and DSA."
+    },
+    {
+      "role": "Core Member, GDG IGIT",
+      "detail": "Organized events on Jetpack Compose and Modern Android Development."
+    },
+    {
+      "role": "HackNITR 7.0",
+      "detail": "Shipped a functional Android MVP independently in a 24-hour sprint."
+    }
+  ]
+}
